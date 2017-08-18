@@ -1,14 +1,16 @@
-﻿using System;
+using System;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace ChinookConsoleApp
-{  
-    public class ListEmployees
+{
+    public class DeleteEmployee
     {
-        public void List()
+        public void delete()
         {
             Console.Clear();
+            
 
             using (var connection = new SqlConnection("Server = (local)\\SqlExpress; Database=chinook;Trusted_Connection=True;"))
             {
@@ -28,8 +30,9 @@ namespace ChinookConsoleApp
                         Console.WriteLine($"{reader["Id"]}.) {reader["FullName"]}");
                     }
 
-                    Console.WriteLine("Press enter to return to the menu.");
-                    Console.ReadLine();
+                    Console.WriteLine("8=============D");
+                    Console.WriteLine("Select Employee to Delete");
+                    var del = Console.ReadLine();
                 }
                 catch (Exception ex)
                 {
