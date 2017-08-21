@@ -10,15 +10,22 @@ namespace ChinookConsoleApp
         public int Id { get; set; }
         public string FullName { get; set; }
     }
-
+  
     public class ListEmployees
     {
         public int List(string prompt)
         {
             Console.Clear();
 
-            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Chinook"].ConnectionString))
+            using (var connection = new SqlConnection("Server = (local)\\SqlExpress; Database=chinook;Trusted_Connection=True;"))
             {
+                connection.Query<>
+                var employeeListCommand = connection.CreateCommand();
+
+                employeeListCommand.CommandText = "select employeeid as Id, " +
+                                                  "firstname + ' ' + lastname as fullname " +
+                                                  "from Employee";
+
                 try
                 {
                     connection.Open();
