@@ -25,12 +25,10 @@ namespace ChinookConsoleApp
                 Console.Write(">");
                 var selection = Console.ReadLine();
 
-
-                if (selection == "1") new ListEmployees().List();
+                if (selection == "1") new ListEmployees().List("Press enter to return to the menu");
                 if (selection == "2") new AddEmployee().Add();
                 if (selection == "3") new DeleteEmployee().Delete();
                 if (selection == "9") break;
-
             }
         }
     }

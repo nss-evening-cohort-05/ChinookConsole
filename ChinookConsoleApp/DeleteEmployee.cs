@@ -1,4 +1,4 @@
-using System;
+using.System
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -7,37 +7,43 @@ namespace ChinookConsoleApp
 {
     public class DeleteEmployee
     {
-        public void delete()
+        public void Delete()
         {
-            Console.Clear();
-            
+            var employeeList = new ListEmployees();
+            var firedEmployee = employeeList.List("Pick an employee to transition:");
 
-            using (var connection = new SqlConnection("Server = (local)\\SqlExpress; Database=chinook;Trusted_Connection=True;"))
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Chinook"].ConnectionString))
             {
-                var employeeListCommand = connection.CreateCommand();
+                connection.Open();
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = "Delete From Employee where EmployeeId = @EmployeeId";
 
-                employeeListCommand.CommandText = "select employeeid as Id, " +
-                                                  "firstname + ' ' + lastname as fullname " +
-                                                  "from Employee";
+                var employeeIdParameter = cmd.Parameters.Add("@EmployeeId", SqlDbType.Int);
+                employeeIdParameter.Value = firedEmployee;
 
                 try
                 {
-                    connection.Open();
-                    var reader = employeeListCommand.ExecuteReader();
+                    var affectedRows = cmd.ExecuteNonQuery();
 
-                    while (reader.Read())
+                    if (affectedRows == 1)
                     {
-                        Console.WriteLine($"{reader["Id"]}.) {reader["FullName"]}");
+                        Console.WriteLine("Success");
+                    }
+                    else if (affectedRows > 1)
+                    {
+                        Console.WriteLine("AAAAHHHHHH");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to find a matching Id");
                     }
 
-                    Console.WriteLine("8=============D");
-                    Console.WriteLine("Select Employee to Delete");
-                    var del = Console.ReadLine();
+                    Console.WriteLine("Press enter to return to the menu");
+                    Console.ReadLine();
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine(ex.StackTrace);
+                    Console.WriteLine(e.Message);
                 }
             }
         }
